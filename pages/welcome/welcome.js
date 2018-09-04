@@ -44,9 +44,17 @@ Page({
       (res) => {
         console.log('enter 成功', res);
         wx.setStorageSync(apiConst.SAVE_ID_KEY, res.id);
-        wx.redirectTo({
-          url: pagesUrl.BREATH_DETECTION
+        wx.showToast({
+          title: apiConst.LOGIN_SUC_MSG,
+          icon: 'none'
         });
+        setTimeout(
+          () => {
+            wx.redirectTo({
+              url: pagesUrl.BREATH_DETECTION
+            });
+          }, apiConst.REDIRECT_INTERVAL
+        );
       },
       (rej) => {
         console.error('enter 失败', rej);

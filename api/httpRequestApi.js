@@ -1,30 +1,36 @@
 // TODO 修改 BASE_URL
+import * as constant from './api-const';
+
 const BASE_URL = "https://www.wenxiangdong.cn";
 const POST = "POST";
 const GET = "GET";
 var dRequest = (url, data, method, onSuccess, onFail) => {
-  console.log(`request ${url}`)
-  console.log('params:')
+  console.log(`request ${url}`);
+  console.log('params:');
   for (let key in data) {
     console.log(`${key}:${data[key]}`)
-  }
+  };
+
+  var handleFail = (fai) => {
+    if (!fai.error) {
+      fai.error = constant.OTHER_ERR_MSG;
+    }
+    onFail(fai);
+  };
+
   wx.request({
     url: BASE_URL + url,
     data: data,
     method: method,
     success: (res) => {
       console.log('httpRequest接受到回应', res)
-      if (res) {
-        if (res.statusCode !== 200) {
-          onFail(res.data);
-        } else {
-          onSuccess(res.data);
-        }
+      if (res && res.statusCode === 200) {
+        onSuccess(res.data);
       } else {
-        onFail(res);
+        handleFail(res);
       }
     },
-    fail: onFail
+    fail: handleFail
   })
 };
 

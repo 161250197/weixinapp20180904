@@ -6,10 +6,19 @@ import apiStub from './api-stub';
 
 export default {
 
+/**
+ * 服务器返回数据
+ * {
+      result: String,
+      data: any,
+      error: String
+  }
+ */
+
   /**
    * 服务器登录
-   * @param {*} resolve 返回标识id {id:int}
-   * @param {*} reject 返回错误信息 {errMsg:String}
+   * @param {*} resolve 返回标识id
+   * @param {*} reject 返回错误信息
    */
   enter(resolve, reject) {
     if (httpRequest.isTestMode) {
@@ -20,21 +29,12 @@ export default {
 
       var onFail = (fai) => {
         console.log('服务器登录失败', fai);
-        if (fai.errID == undefined) {
-          reject({ errMsg: constant.OTHER_ERR_MSG });
-        }
-        switch (fai.errID) {
-          case 0:
-            reject({ errMsg: constant.FULL_ERR_MSG });
-            break;
-          default:
-            reject({ errMsg: constant.OTHER_ERR_MSG });
-        }
+        reject({ errMsg: fai.error });
       }
 
       var onSuccess = (suc) => {
         console.log('服务器登录成功', suc);
-        resolve({id: suc.id});
+        resolve({id: suc.data.id});
       }
 
       httpRequest.dRequest(
@@ -63,7 +63,7 @@ export default {
 
       var onFail = (fai) => {
         console.log('服务器退出失败', fai);
-        reject({ errMsg: constant.QUIT_ERR_MSG });
+        reject({ errMsg: fai.error });
       }
 
       var onSuccess = (suc) => {

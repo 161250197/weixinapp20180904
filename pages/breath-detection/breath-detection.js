@@ -54,8 +54,8 @@ Page({
             wx.redirectTo({
               url: pagesUrl.WELCOME
             });
-          }, 1000
-        )
+          }, apiConst.REDIRECT_INTERVAL
+        );
       },
       (rej) => {
         console.error('quit 失败', rej);
