@@ -1,0 +1,11 @@
+<!--pages/welcome/welcome.wxml-->
+<!--背景图  -->
+<!--按钮 标题 美化  -->
+<view class="container">
+  <view class='title-view'>
+    <text class='title'>{{title}}</text>
+  </view>
+  <view class='enter-button-view'>
+    <button class='enter-button' bindtap='onEnter' disabled='{{enterButtonDisabled}}'>进入</button>
+  </view>
+</view>

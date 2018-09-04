@@ -1,0 +1,14 @@
+{
+  "pages":[
+    "pages/welcome/welcome",
+    "pages/breath-detection/breath-detection",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  }
+}

@@ -1,0 +1,12 @@
+<!--pages/breath-detection/breath-detection.wxml-->
+<!--背景  -->
+<!--按钮美化  -->
+<!--breath-view 动态  -->
+<view class="container">
+  <view class='breath-view'>
+    <text class='title'>{{title}}</text>
+  </view>
+  <view class='quit-button-view'>
+    <button class='quit-button' bindtap='onQuit' disabled='{{quitButtonDisabled}}'>退出</button>
+  </view>
+</view>

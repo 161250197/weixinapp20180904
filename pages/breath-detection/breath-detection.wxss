@@ -1,0 +1,23 @@
+/* pages/breath-detection/breath-detection.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.breath-view {
+  width: 600rpx;
+  height: 600rpx;
+
+  background-color: rebeccapurple;
+}
+
+.quit-button-view {
+  margin-top: 1rem;
+}
+
+.quit-button {
+  width: 256rpx; 
+  margin: 20rpx;
+}
