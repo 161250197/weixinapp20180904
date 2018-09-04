@@ -80,8 +80,8 @@ export default {
 
   /**
    * 向服务器端发送数据
-   * @param {int} rate 呼吸频率 1 - 64
-   * @param {int} force 呼吸强度 1 - 64
+   * @param {int} rate 呼吸频率 1 - 63
+   * @param {int} force 呼吸强度 1 - 63
    */
   sendData(rate, force) {
     console.log(`rate = ${rate}, force = ${force}`);
