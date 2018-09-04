@@ -20,6 +20,9 @@ export default {
 
       var onFail = (fai) => {
         console.log('服务器登录失败', fai);
+        if (fai.errID == undefined) {
+          reject({ errMsg: constant.OTHER_ERR_MSG });
+        }
         switch (fai.errID) {
           case 0:
             reject({ errMsg: constant.FULL_ERR_MSG });
