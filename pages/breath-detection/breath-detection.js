@@ -32,7 +32,7 @@ Page({
         console.log(`设置id = ${res.data}, height = ${height}`);
         this.setData({ quitButtonDisabled: false, id: res.data, height: height, isRecording: true });
 
-        this.startDetectBreath();
+        // this.startDetectBreath(); TODO
       },
       fail: (fai) => {
         console.log('还未加入');

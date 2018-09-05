@@ -8,7 +8,12 @@
     <text class='prompt'>{{prompt}}</text>
   </view>
   <view class='breath-view'>
-    <text class='title'>{{title}}</text>
+    <view class='circle'>
+      <view class='circle1'></view>
+      <view class='circle2'></view>
+      <view class='circle3'></view>
+      <view class='center'></view>
+    </view>
   </view>
   <view class='quit-button-view'>
     <button class='quit-button' bindtap='onQuit' disabled='{{quitButtonDisabled}}'>退出</button>
