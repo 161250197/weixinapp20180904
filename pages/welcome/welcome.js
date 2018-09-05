@@ -1,5 +1,4 @@
 // pages/welcome/welcome.js
-// TODO 标题修正
 import guideApi from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url"

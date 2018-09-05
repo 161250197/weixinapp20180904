@@ -1,8 +1,4 @@
 /* pages/welcome/welcome.wxss */
-.title {
-  
-}
-
 .enter-button-view {
   margin-top: 10rem;
 }
