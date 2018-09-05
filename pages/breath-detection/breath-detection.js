@@ -92,8 +92,26 @@ Page({
         const options = {
             duration: 1000,
             sampleRate: 8000,
+            encodeBitRate: 16000,
+            format: 'aac'
+        };
 
-        }
+        const i = 0;
+        recorderManager.onFrameRecorded((res) => {
+          const frameBuffer = res.frameBuffer;
+          console.log(i, frameBuffer);
+        });
+        recorderManager.onStart((res) => {
+          console.log('start!', res);
+        });
+        recorderManager.onStop((res) => {
+          console.log('stop!', res);
+        });
+        recorderManager.onError((res) => {
+          console.log('error!', res);
+        });
+
+        recorderManager.start(options);
     },
 
     /**
