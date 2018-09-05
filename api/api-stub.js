@@ -57,7 +57,7 @@ export default {
   sendData(reject) {
     console.log('sendData 方法请求');
 
-    const hasErr = true;
+    const hasErr = false;
 
     if (hasErr) {
       reject({ errMsg: constant.SEND_DATA_ERR_MSG });

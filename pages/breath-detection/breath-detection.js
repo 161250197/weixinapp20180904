@@ -110,7 +110,12 @@ Page({
       if (this.data.isRecording) {
         const frameBuffer = res.frameBuffer;
         var view = new Uint8Array(frameBuffer);
-        console.log(frameBuffer.byteLength, view);
+        var len = frameBuffer.byteLength;
+        var view16 = new Array(len);
+        for (var i = 0; i < len; i++) {
+          view16[i] = view[i].toString(16);
+        }
+        console.log(len, view, view16);
 
         // TODO
 
@@ -124,7 +129,7 @@ Page({
     
     recorderManager.onStop((res) => {
       if (this.data.isRecording) {
-        recorderManager.start(options);
+        // recorderManager.start(options); TODO
       } else{
         console.log('stop recording!');
       }
