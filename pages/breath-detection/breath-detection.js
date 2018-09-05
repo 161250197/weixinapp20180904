@@ -98,11 +98,11 @@ Page({
 
     const recorderManager = wx.getRecorderManager();
     const options = {
-      duration: 1000,//指定录音的时长，单位 ms
+      duration: 1500,//指定录音的时长，单位 ms
       sampleRate: 8000,//采样率
       numberOfChannels: 1,//录音通道数
       encodeBitRate: 16000,//编码码率
-      format: 'mp3',//音频格式，有效值 aac/mp3
+      format: 'aac',//音频格式，有效值 aac/mp3
       frameSize: 1,//指定帧大小，单位 KB
     };
 
@@ -128,15 +128,12 @@ Page({
     });
     
     recorderManager.onStop((res) => {
+      console.log(res);
       if (this.data.isRecording) {
         // recorderManager.start(options); TODO
       } else{
         console.log('stop recording!');
       }
-    });
-
-    recorderManager.onError((res) => {
-      this.errorReject({ errMsg: apiConst.RECORD_ERR_MSG});
     });
 
     recorderManager.start(options);
@@ -149,7 +146,10 @@ Page({
     console.log('sendData 方法调用');
     // rate force range in [1, 63]
     if (this.data.id && this.data.rate && this.data.force) {
-      guideApi.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force }, this.errorReject);
+      guideApi.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force }, (rej) => {
+        console.log('sendData error');
+        this.errorReject(rej);
+      });
     }
   },
 
