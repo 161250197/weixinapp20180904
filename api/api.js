@@ -28,7 +28,8 @@ export default {
 
       var onFail = (fai) => {
         console.log('服务器登录失败', fai);
-        reject({ errMsg: fai.error });
+        var errMsg = fai && fai.error ? fai.error : apiConst.OTHER_ERR_MSG;
+        reject({ errMsg });
       }
 
       var onSuccess = (suc) => {
@@ -61,7 +62,8 @@ export default {
 
       var onFail = (fai) => {
         console.log('服务器退出失败', fai);
-        reject({ errMsg: fai.error });
+        var errMsg = fai && fai.error ? fai.error : apiConst.OTHER_ERR_MSG;
+        reject({ errMsg });
       }
 
       var onSuccess = (suc) => {
@@ -95,7 +97,8 @@ export default {
     } else {
       var onFail = (fai) => {
         console.log('发送数据失败', fai);
-        reject({ errMsg: fai.error });
+        var errMsg = fai && fai.error ? fai.error : apiConst.OTHER_ERR_MSG;
+        reject({ errMsg });
       }
 
       var onSuccess = (suc) => {

@@ -163,8 +163,9 @@ Page({
 
     console.error('出现错误', rej);
 
+    const errMsg = rej && rej.errMsg ? rej.msg : apiConst.OTHER_ERR_MSG;
     wx.showToast({
-      title: rej.errMsg,
+      title: errMsg,
       icon: 'none'
     });
 
