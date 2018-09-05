@@ -1,6 +1,6 @@
-const ENTER_URL = '';
-const QUIT_URL = '';
-const SEND_DATA_URL = '';
+const ENTER_URL = '/users/log-in';
+const QUIT_URL = '/users/log-out';
+const SEND_DATA_URL = '/breath';
 
 export {
   ENTER_URL,

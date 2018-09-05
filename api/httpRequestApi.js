@@ -1,7 +1,7 @@
 // TODO 修改 BASE_URL
 import * as constant from './api-const';
 
-const BASE_URL = "https://www.wenxiangdong.cn";
+const BASE_URL = "http://111.231.99.122:3000";
 const POST = "POST";
 const GET = "GET";
 var dRequest = (url, data, method, onSuccess, onFail) => {
