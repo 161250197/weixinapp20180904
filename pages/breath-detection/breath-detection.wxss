@@ -6,8 +6,8 @@
   background-color: rebeccapurple;
 }
 
-.quit-button-view {
-  margin-top: 1rem;
+.quit-button-view, .breath-view {
+  /* margin-top: 1rem; */
 }
 
 .quit-button {

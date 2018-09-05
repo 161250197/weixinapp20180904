@@ -3,7 +3,10 @@
 <!--按钮美化  -->
 <!--breath-view 动态  -->
 <!--添加退出提示  -->
-<view class="container">
+<view class="container" style='height: {{height}}rpx'>
+  <view class='prompt-view'>
+    <text class='prompt'>{{prompt}}</text>
+  </view>
   <view class='breath-view'>
     <text class='title'>{{title}}</text>
   </view>

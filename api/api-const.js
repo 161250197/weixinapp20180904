@@ -6,6 +6,7 @@ const QUIT_SUC_MSG = '退出成功，欢迎再来';
 const QUIT_ERR_MSG = '出错了，退出失败';
 
 const SAVE_ID_KEY = 'savedID';
+const WINDOW_HEIGHT_KEY = 'windowHeight';
 const REDIRECT_INTERVAL = 1000;
 
 export {
@@ -17,5 +18,6 @@ export {
   QUIT_ERR_MSG,
 
   SAVE_ID_KEY,
+  WINDOW_HEIGHT_KEY,
   REDIRECT_INTERVAL
 };

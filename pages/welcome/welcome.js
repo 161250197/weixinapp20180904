@@ -11,7 +11,8 @@ Page({
    */
   data: {
     title: 'Breath_DH',
-    enterButtonDisabled: true
+    enterButtonDisabled: true,
+    height: 1000
   },
 
   /**
@@ -28,7 +29,13 @@ Page({
       },
       fail: (fai) => {
         console.error('还未加入');
-        this.setData({ enterButtonDisabled: false });
+        const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
+        if (!height) {
+          const info = wx.getSystemInfoSync();
+          wx.setStorageSync(apiConst.WINDOW_HEIGHT_KEY, 750 * info.windowHeight / info.screenWidth);
+        }
+        console.log(`设置height = ${height}`);
+        this.setData({ enterButtonDisabled: false, height: height });
       }
     })
   },
