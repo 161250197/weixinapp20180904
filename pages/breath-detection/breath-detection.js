@@ -40,15 +40,8 @@ Page({
    */
   onHide: function () {
     console.log('breath-detection hide');
-    // TODO
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-    console.log('breath-detection unload');
-    // TODO
+    // 隐藏时即退出
+    this.onQuit();
   },
 
   /**

@@ -2,6 +2,7 @@
 <!--背景  -->
 <!--按钮美化  -->
 <!--breath-view 动态  -->
+<!--添加退出提示  -->
 <view class="container">
   <view class='breath-view'>
     <text class='title'>{{title}}</text>
