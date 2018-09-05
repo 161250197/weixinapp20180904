@@ -4,203 +4,180 @@ import guideApi from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
 
+const originPrompt = '请贴近麦克风', quitPrompt = '出现错误，请点击退出';
+
 Page({
 
-    /**
-     * 页面的初始数据
-     */
-    data: {
-        id: undefined,
-        rate: 1,
-        force: 1,
-        prompt: '请贴近麦克风',
-        quitButtonDisabled: true,
-        isRecording: false,
-        height: 1000,
+  /**
+   * 页面的初始数据
+   */
+  data: {
+    id: undefined,
+    rate: 1,
+    force: 1,
+    prompt: originPrompt,
+    quitButtonDisabled: true,
+    isRecording: false,
+    height: 1000
+  },
 
-        sendDataReject: (rej) => {
-          this.setData({ quitButtonDisabled: true, isRecording: false });
-          const recorderManager = wx.getRecorderManager();
-          recorderManager.stop();
-          console.error('sendData 失败', rej);
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function(options) {
+    wx.getStorage({
+      key: apiConst.SAVE_ID_KEY,
+      success: (res) => {
+        const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
+        console.log(`设置id = ${res.data}, height = ${height}`);
+        this.setData({ quitButtonDisabled: false, id: res.data, height: height, isRecording: true });
 
-          wx.showToast({
-            title: rej.errMsg,
-            icon: 'none'
-          });
-
-          guideApi.quit(
-            this.data.id,
-            (res) => {
-              wx.removeStorageSync(apiConst.SAVE_ID_KEY);
-              console.log('quit 成功', res);
-
-              wx.redirectTo({
-                url: pagesUrl.WELCOME
-              });
-            },
-            (rej) => {
-              // TODO
-              console.error('quit 失败', rej);
-              wx.showToast({
-                title: rej.errMsg,
-                icon: 'none'
-              });
-              this.setData({ quitButtonDisabled: false });
-            }
-          );
-        }
-    },
-
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad: function(options) {
-        wx.getStorage({
-            key: apiConst.SAVE_ID_KEY,
-            success: (res) => {
-              const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
-              console.log(`设置id = ${res.data}, height = ${height}`);
-              this.setData({ quitButtonDisabled: false, id: res.data, height: height });
-              this.startDetectBreath();
-            },
-            fail: (fai) => {
-              console.error('还未加入');
-              wx.redirectTo({
-                  url: pagesUrl.WELCOME
-              });
-            }
-        })
-    },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function() {
-        console.log('breath-detection hide');
-        // 隐藏时即退出
-        this.onQuit();
-    },
-
-    /**
-     * 用户点击 退出 按钮
-     */
-    onQuit: function (e) {
-      this.setData({ quitButtonDisabled: true, isRecording: false });
-      const recorderManager = wx.getRecorderManager();
-      recorderManager.stop();
-        console.log('onQuit 方法调用', e);
-
-        guideApi.quit(
-            this.data.id,
-            (res) => {
-                wx.removeStorageSync(apiConst.SAVE_ID_KEY);
-                console.log('quit 成功', res);
-                wx.showToast({
-                    title: res.sucMsg,
-                    icon: 'none'
-                });
-                setTimeout(
-                    () => {
-                        wx.redirectTo({
-                            url: pagesUrl.WELCOME
-                        });
-                    }, apiConst.REDIRECT_INTERVAL
-                );
-            },
-            (rej) => {
-                console.error('quit 失败', rej);
-                wx.showToast({
-                    title: rej.errMsg,
-                    icon: 'none'
-                });
-                this.setData({ quitButtonDisabled: false });
-            }
-        );
-    },
-
-    /**
-     * 开始监听呼吸
-     */
-    startDetectBreath: function() {
-        // TODO
-        const recorderManager = wx.getRecorderManager();
-        const options = {
-          duration: 1000,//指定录音的时长，单位 ms
-          sampleRate: 8000,//采样率
-          numberOfChannels: 1,//录音通道数
-          encodeBitRate: 16000,//编码码率
-          format: 'mp3',//音频格式，有效值 aac/mp3
-          frameSize: 1,//指定帧大小，单位 KB
-        };
-
-        const i = 0;
-        recorderManager.onFrameRecorded((res) => {
-          const frameBuffer = res.frameBuffer;
-          var view = new Uint8Array(frameBuffer);
-          console.log(frameBuffer.byteLength, view);
-          // console.log(i, frameBuffer);
-          if (this.data.isRecording) {
-          }
+        this.startDetectBreath();
+      },
+      fail: (fai) => {
+        console.log('还未加入');
+        wx.redirectTo({
+          url: pagesUrl.WELCOME
         });
-        recorderManager.onStart(() => {
-          console.log('start!');
-        });
-        recorderManager.onStop((res) => {
-          console.log('stop!', res);
-          wx.playVoice({
-            filePath: res.tempFilePath
-          })
-        });
-        recorderManager.onError((res) => {
-          console.log('error!', res);
-        });
+      }
+    })
+  },
 
-        this.setData({
-          sendDataReject: (rej) => {
-            this.setData({ quitButtonDisabled: true, isRecording: false });
-            recorderManager.stop();
-            console.error('sendData 失败', rej);
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function() {
+    console.log('breath-detection hide');
+    // 隐藏时即退出
+    this.onQuit();
+  },
 
-            wx.showToast({
-              title: rej.errMsg,
-              icon: 'none'
+  /**
+   * 用户点击 退出 按钮
+   */
+  onQuit: function (e) {
+    this.setData({ quitButtonDisabled: true, isRecording: false });
+    const recorderManager = wx.getRecorderManager();
+    recorderManager.stop();
+
+    console.log('onQuit 方法调用', e);
+
+    guideApi.quit(
+      this.data.id,
+      (res) => {
+        wx.removeStorageSync(apiConst.SAVE_ID_KEY);
+        console.log('quit 成功', res);
+        wx.showToast({
+          title: res.sucMsg,
+          icon: 'none'
+        });
+        setTimeout(
+          () => {
+            wx.redirectTo({
+              url: pagesUrl.WELCOME
             });
-
-            guideApi.quit(
-              this.data.id,
-              (res) => {
-                wx.removeStorageSync(apiConst.SAVE_ID_KEY);
-                console.log('quit 成功', res);
-
-                wx.redirectTo({
-                  url: pagesUrl.WELCOME
-                });
-              },
-              (rej) => {
-                // TODO
-                console.error('quit 失败', rej);
-                wx.showToast({
-                  title: rej.errMsg,
-                  icon: 'none'
-                });
-                this.setData({ quitButtonDisabled: false });
-              }
-            );
-          }
+          }, apiConst.REDIRECT_INTERVAL
+        );
+      },
+      (rej) => {
+        console.error('quit 失败', rej);
+        wx.showToast({
+          title: rej.errMsg,
+          icon: 'none'
         });
+        this.setData({ quitButtonDisabled: false, prompt: quitPrompt });
+      }
+    );
+  },
 
+  /**
+   * 开始监听呼吸
+   */
+  startDetectBreath: function () {
+    console.log('startDetectBreath 方法调用');
+
+    const recorderManager = wx.getRecorderManager();
+    const options = {
+      duration: 1000,//指定录音的时长，单位 ms
+      sampleRate: 8000,//采样率
+      numberOfChannels: 1,//录音通道数
+      encodeBitRate: 16000,//编码码率
+      format: 'mp3',//音频格式，有效值 aac/mp3
+      frameSize: 1,//指定帧大小，单位 KB
+    };
+
+    recorderManager.onFrameRecorded((res) => {
+      if (this.data.isRecording) {
+        const frameBuffer = res.frameBuffer;
+        var view = new Uint8Array(frameBuffer);
+        console.log(frameBuffer.byteLength, view);
+
+        // TODO
+
+        this.sendData();
+      }
+    });
+
+    recorderManager.onStart(() => {
+      console.log('start recording!');
+    });
+    
+    recorderManager.onStop((res) => {
+      if (this.data.isRecording) {
         recorderManager.start(options);
-    },
+      } else{
+        console.log('stop recording!');
+      }
+    });
 
-    /**
-     * 向服务器端发送数据
-     */
-    sendData: function() {
-        // rate force range in [1, 63]
-      if (this.data.id && this.data.rate && this.data.force && this.data.sendDataReject) {
-          guideApi.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force }, this.data.sendDataReject);
-        }
+    recorderManager.onError((res) => {
+      this.errorReject({ errMsg: apiConst.RECORD_ERR_MSG});
+    });
+
+    recorderManager.start(options);
+  },
+
+  /**
+   * 向服务器端发送数据
+   */
+  sendData: function() {
+    console.log('sendData 方法调用');
+    // rate force range in [1, 63]
+    if (this.data.id && this.data.rate && this.data.force) {
+      guideApi.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force }, this.errorReject);
     }
+  },
+
+  /**
+   * 出错回调
+   */
+  errorReject: function(rej) {
+    this.setData({ quitButtonDisabled: true, isRecording: false });
+    const recorderManager = wx.getRecorderManager();
+    recorderManager.stop();
+
+    console.error('出现错误', rej);
+
+    wx.showToast({
+      title: rej.errMsg,
+      icon: 'none'
+    });
+
+    guideApi.quit(
+      this.data.id,
+      (res) => {
+        wx.removeStorageSync(apiConst.SAVE_ID_KEY);
+        console.log('quit 成功', res);
+
+        wx.redirectTo({
+          url: pagesUrl.WELCOME
+        });
+      },
+      (rej) => {
+        console.error('quit 失败', rej);
+        this.setData({ quitButtonDisabled: false, prompt: quitPrompt });
+      }
+    );
+  }
 
 })

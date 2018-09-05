@@ -6,6 +6,7 @@ const QUIT_SUC_MSG = '退出成功，欢迎再来';
 const QUIT_ERR_MSG = '出错了，退出失败';
 
 const SEND_DATA_ERR_MSG = '出错了，链接中断';
+const RECORD_ERR_MSG = '录音出错了';
 
 const SAVE_ID_KEY = 'savedID';
 const WINDOW_HEIGHT_KEY = 'windowHeight';

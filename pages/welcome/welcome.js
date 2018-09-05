@@ -28,7 +28,7 @@ Page({
         });
       },
       fail: (fai) => {
-        console.error('还未加入');
+        console.log('还未加入');
         const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
         if (!height) {
           const info = wx.getSystemInfoSync();
