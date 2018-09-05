@@ -48,5 +48,19 @@ export default {
         }
       }, 1000
     );
+  },
+
+  /**
+   * 向服务器端发送数据
+   * @param {*} reject 失败回调
+   */
+  sendData(reject) {
+    console.log('sendData 方法请求');
+
+    const hasErr = false;
+
+    if (hasErr) {
+      reject({ errMsg: constant.SEND_DATA_ERR_MSG });
+    }
   }
 };

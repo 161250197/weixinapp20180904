@@ -23,7 +23,6 @@ export default {
   enter(resolve, reject) {
     if (httpRequest.isTestMode) {
       apiStub.enter(resolve, reject);
-      return;
     } else{
       console.log('enter 方法请求');
 
@@ -57,7 +56,6 @@ export default {
     console.log(`id = ${id}`);
     if (httpRequest.isTestMode) {
       apiStub.quit(resolve, reject);
-      return;
     } else {
       console.log('quit 方法请求');
 
@@ -84,18 +82,20 @@ export default {
   /**
    * 向服务器端发送数据
    * @param {BreathData} data 呼吸数据
-   * @param {int} rate 呼吸频率 1 - 63
-   * @param {int} force 呼吸强度 1 - 63
+   * @param {*} reject 失败回调
    */
-  sendData(data) {
+  sendData(data, reject) {
     console.log('data:');
     for (let key in data) {
-      console.log(`${key}:${data[key]}`)
+      console.log(`${key}:${data[key]}`);
     };
 
-    if (!httpRequest.isTestMode) {
+    if (httpRequest.isTestMode) {
+      apiStub.sendData(reject);
+    } else {
       var onFail = (fai) => {
         console.log('发送数据失败', fai);
+        reject({ errMsg: fai.error });
       }
 
       var onSuccess = (suc) => {
