@@ -11,6 +11,8 @@ Page({
    */
   data: {
     id: undefined,
+    rate: 1,
+    force: 1,
     quitButtonDisabled: true
   },
 
@@ -31,6 +33,22 @@ Page({
         });
       }
     })
+  },
+
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+    console.log('breath-detection hide');
+    // TODO
+  },
+
+  /**
+   * 生命周期函数--监听页面卸载
+   */
+  onUnload: function () {
+    console.log('breath-detection unload');
+    // TODO
   },
 
   /**
@@ -76,51 +94,13 @@ Page({
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
+   * 向服务器端发送数据
    */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
+  sendData: function() {
+    // rate force range in [1, 63]
+    if (this.data.id && this.data.rate && this.data.force) {
+      guideApi.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force });
+    }
   }
+
 })

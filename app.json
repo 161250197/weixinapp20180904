@@ -1,9 +1,7 @@
 {
   "pages":[
     "pages/welcome/welcome",
-    "pages/breath-detection/breath-detection",
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/breath-detection/breath-detection"
   ],
   "window":{
     "backgroundTextStyle":"light",

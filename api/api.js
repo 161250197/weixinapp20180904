@@ -83,11 +83,15 @@ export default {
 
   /**
    * 向服务器端发送数据
+   * @param {BreathData} data 呼吸数据
    * @param {int} rate 呼吸频率 1 - 63
    * @param {int} force 呼吸强度 1 - 63
    */
-  sendData(rate, force) {
-    console.log(`rate = ${rate}, force = ${force}`);
+  sendData(data) {
+    console.log('data:');
+    for (let key in data) {
+      console.log(`${key}:${data[key]}`)
+    };
 
     if (!httpRequest.isTestMode) {
       var onFail = (fai) => {
@@ -100,7 +104,7 @@ export default {
 
       httpRequest.dRequest(
         serverUrl.SEND_DATA_URL,
-        { rate, force },
+        data,
         httpRequest.POST,
         onSuccess,
         onFail
