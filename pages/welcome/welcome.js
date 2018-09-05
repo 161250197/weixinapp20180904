@@ -18,25 +18,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.getStorage({
-      key: apiConst.SAVE_ID_KEY,
-      success: (res) => {
-        console.log(`已加入 id = ${res.data}`);
-        wx.redirectTo({
-          url: pagesUrl.BREATH_DETECTION
-        });
-      },
-      fail: (fai) => {
-        console.log('还未加入');
-        const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
-        if (!height) {
-          const info = wx.getSystemInfoSync();
-          wx.setStorageSync(apiConst.WINDOW_HEIGHT_KEY, 750 * info.windowHeight / info.screenWidth);
-        }
-        console.log(`设置height = ${height}`);
-        this.setData({ enterButtonDisabled: false, height: height });
-      }
-    })
+    const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
+    if (!height) {
+      const info = wx.getSystemInfoSync();
+      wx.setStorageSync(apiConst.WINDOW_HEIGHT_KEY, 750 * info.windowHeight / info.screenWidth);
+    }
+    console.log(`设置height = ${height}`);
+    this.setData({ enterButtonDisabled: false, height: height });
   },
 
   /**

@@ -33,7 +33,7 @@ export default {
 
       var onSuccess = (suc) => {
         console.log('服务器登录成功', suc);
-        resolve({id: suc.data.id});
+        resolve({id: suc.data});
       }
 
       httpRequest.dRequest(
