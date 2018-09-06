@@ -5,6 +5,7 @@ import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
 
 const originPrompt = '请贴近麦克风', quitPrompt = '出现错误，请点击退出';
+const dataLen = 280, headLen = 8, lastTime = 72;
 
 Page({
 
@@ -106,17 +107,39 @@ Page({
       frameSize: 1,//指定帧大小，单位 KB
     };
 
+    // last cut rest data and length
+    var restData, restDataLen, data;
+
     recorderManager.onFrameRecorded((res) => {
       if (this.data.isRecording) {
-        const frameBuffer = res.frameBuffer;
-
-        // base64 -> //v1ZAAD+YSCw8Nv …
-        const base64 = wx.arrayBufferToBase64(frameBuffer)
+        // isLastFrame
 
         // hex -> fffbe2640000f9e2 …
-        const hex = Array.prototype.map.call(new Uint8Array(frameBuffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+        const hex = Array.prototype.map.call(new Uint8Array(res.frameBuffer), x => ('00' + x.toString(16)).slice(-2)).join('');
 
-        console.log(hex);
+        const len = hex.length;
+
+        var start = 0, newStart;
+        if (restData) {
+          start = dataLen - restDataLen;
+          data = restData + hex.substr(0, start);
+          restData = undefined;
+          console.log('data', restData);
+        }
+
+        while (start < len) {
+          newStart = start + headLen + dataLen;
+          if (newStart <= len) {
+            data = hex.substr(start + headLen, dataLen);
+            start = newStart;
+            console.log('data', data);
+          } else {
+            start += headLen;
+            restDataLen = len - start;
+            restData = hex.substr(start, restDataLen);
+            break;
+          }
+        }
 
         // TODO
 
