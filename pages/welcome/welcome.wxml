@@ -1,11 +1,7 @@
 <!--pages/welcome/welcome.wxml-->
-<!--背景图  -->
-<!--按钮 标题 美化  -->
 <view class="container" style='height: {{height}}rpx'>
-  <view class='title-view'>
-    <text class='title'>{{title}}</text>
-  </view>
-  <view class='enter-button-view'>
-    <button class='enter-button' bindtap='onEnter' disabled='{{enterButtonDisabled}}'>进入</button>
+  <image class='background-img' src='../../res/background.jpg'  bindtap='onEnter'></image> 
+  <view class='prompt-view'>
+    <text class='prompt'>{{prompt}}</text>
   </view>
 </view>

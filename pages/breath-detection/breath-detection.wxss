@@ -1,38 +1,71 @@
 /* pages/breath-detection/breath-detection.wxss */
-.quit-button {
-  width: 256rpx; 
-  margin: 20rpx;
+.background-img {
+  height: 100%;
+  position: absolute;
+  z-index: -1;
 }
 
-.breath-view {
+.prompt-view {
+  padding-top: 17%;
+}
+
+.prompt {
+  color: #9B6616;
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 5px;
+}
+
+.quit-button-view {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.quit-button {
+  width: 200px; 
+  margin-bottom: 40rpx;
+  color: rgba(117, 72, 4, 0.8);
+  box-shadow: rgba(154, 102, 19, 0.9) 0px 2px 5px 0px;
+  border-width: 2px;
+  border-color: rgba(154, 102, 19, 0.9);
+  border-style: solid;
+  border-radius: 10rpx;
+  background-color: rgba(205, 166, 109, 0.7);
+  outline: none;
+}
+
+ button[disabled][type="default"], wx-button[disabled]:not([type]) {
+  color: rgba(181, 130, 60, 0.5);
+  box-shadow: rgba(209, 174, 119, 0.9) 0px 2px 5px 0px;
+  border-color: rgba(209, 174, 119, 0.9);
+  background-color: rgba(232, 213, 186, 0.7);
+}
+
 .circle1,
 .circle2,
-.circle3,
-.center {
+.circle3 {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   margin: -30px 0 0 -30px;
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  background-color: #666666;
+  background-color: #cda66d;
 }
 
 .center {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   margin: -35px 0 0 -35px;
   width: 70px;
   height: 70px;
   border-radius: 35px;
-  background: #111111;
+  background: #9a6613;
 }
 
 .circle1 {
@@ -51,7 +84,7 @@
   animation: circle 3s linear 1.6s infinite;
 }
 
-@-webkit-keyframes circle {
+@keyframes circle {
   /* Safari and Chrome */
   from {
     opacity: 1;
