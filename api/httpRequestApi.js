@@ -12,7 +12,9 @@ var dRequest = (url, data, method, onSuccess, onFail) => {
   };
 
   var handleFail = (fai) => {
-    if (!fai.error) {
+    if (!fai) {
+      fai = { error: constant.OTHER_ERR_MSG};
+    } else if (!fai.error) {
       fai.error = constant.OTHER_ERR_MSG;
     }
     onFail(fai);
@@ -25,9 +27,13 @@ var dRequest = (url, data, method, onSuccess, onFail) => {
     success: (res) => {
       console.log('httpRequest接受到回应', res)
       if (res && res.statusCode === 200) {
-        onSuccess(res.data);
+        if (res.data && !res.data.error) {
+          onSuccess(res.data);
+        } else{
+          handleFail(res.data);
+        }
       } else {
-        handleFail(res);
+        handleFail(res.data);
       }
     },
     fail: handleFail
