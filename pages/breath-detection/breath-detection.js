@@ -3,7 +3,6 @@
 import guideApi from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
-import * as algorithm from "algorithm";
 
 const originPrompt = '请贴近麦克风', quitPrompt = '出现错误，请点击退出';
 const dataLen = 280, headLen = 8, lastTime = 72;
@@ -15,11 +14,12 @@ Page({
    */
   data: {
     id: undefined,
-    rate: 1,
-    force: 1,
+    rate: 32,
+    force: 32,
     prompt: originPrompt,
     quitButtonDisabled: true,
     isRecording: false,
+    usingBreathDetecting: false,
     height: 1000
   },
 
@@ -34,7 +34,9 @@ Page({
         console.log(`设置id = ${res.data}, height = ${height}`);
         this.setData({ quitButtonDisabled: false, id: res.data, height: height, isRecording: true });
 
-        this.startDetectBreath();
+        if (this.data.usingBreathDetecting) {
+          this.startDetectBreath();
+        }
       },
       fail: (fai) => {
         console.log('还未加入');
@@ -59,8 +61,11 @@ Page({
    */
   onQuit: function (e) {
     this.setData({ quitButtonDisabled: true, isRecording: false });
-    const recorderManager = wx.getRecorderManager();
-    recorderManager.stop();
+
+    if (this.data.usingBreathDetecting) {
+      const recorderManager = wx.getRecorderManager();
+      recorderManager.stop();
+    }
 
     console.log('onQuit 方法调用', e);
 
@@ -113,12 +118,6 @@ Page({
 
     recorderManager.onFrameRecorded((res) => {
       if (this.data.isRecording) {
-
-        // const array = new Uint8Array(res.frameBuffer);
-        // algorithm.onaudioprocess(array);
-
-        // // isLastFrame
-
         // hex -> fffbe2640000f9e2 …
         const hex = Array.prototype.map.call(new Uint8Array(res.frameBuffer), x => ('00' + x.toString(16)).slice(-2)).join('');
 
@@ -129,7 +128,7 @@ Page({
           start = dataLen - restDataLen;
           data = restData + hex.substr(0, start);
           restData = undefined;
-          console.log('data', restData);
+          this.calData(data);
         }
 
         while (start < len) {
@@ -137,7 +136,7 @@ Page({
           if (newStart <= len) {
             data = hex.substr(start + headLen, dataLen);
             start = newStart;
-            console.log('data', data);
+            this.calData(data);
           } else {
             start += headLen;
             restDataLen = len - start;
@@ -146,9 +145,7 @@ Page({
           }
         }
 
-        // // TODO
-
-        // this.sendData();
+        this.sendData();
       }
     });
 
@@ -171,8 +168,19 @@ Page({
   /**
    * 计算data
    */
-  calData: function(str) {
-    
+  calData: function (data) {
+    console.log('calData', data);
+    // TODO refresh rate and force
+  },
+
+  /**
+   * breath tap reaction
+   */
+  onBreathTap: function (e) {
+    if (this.data.isRecording) {
+      console.log('onBreathTap', e);
+    }
+
   },
 
   /**
