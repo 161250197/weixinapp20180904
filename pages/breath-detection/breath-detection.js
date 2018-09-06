@@ -3,6 +3,7 @@
 import guideApi from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
+import * as algorithm from "algorithm";
 
 const originPrompt = '请贴近麦克风', quitPrompt = '出现错误，请点击退出';
 const dataLen = 280, headLen = 8, lastTime = 72;
@@ -112,7 +113,11 @@ Page({
 
     recorderManager.onFrameRecorded((res) => {
       if (this.data.isRecording) {
-        // isLastFrame
+
+        // const array = new Uint8Array(res.frameBuffer);
+        // algorithm.onaudioprocess(array);
+
+        // // isLastFrame
 
         // hex -> fffbe2640000f9e2 …
         const hex = Array.prototype.map.call(new Uint8Array(res.frameBuffer), x => ('00' + x.toString(16)).slice(-2)).join('');
@@ -141,9 +146,9 @@ Page({
           }
         }
 
-        // TODO
+        // // TODO
 
-        this.sendData();
+        // this.sendData();
       }
     });
 
@@ -154,13 +159,20 @@ Page({
     recorderManager.onStop((res) => {
       console.log(res);
       if (this.data.isRecording) {
-        // recorderManager.start(options); TODO
+        recorderManager.start(options);
       } else{
         console.log('stop recording!');
       }
     });
 
     recorderManager.start(options);
+  },
+
+  /**
+   * 计算data
+   */
+  calData: function(str) {
+    
   },
 
   /**
