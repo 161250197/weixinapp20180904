@@ -1,11 +1,13 @@
 // pages/breath-detection/breath-detection.js
-// TODO 开始监听呼吸的方法调用
+// TODO 修改为解析mp3
 import guideApi from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
 
-const originPrompt = '请贴近麦克风', quitPrompt = '出现错误，请点击退出';
+const breathDetectingPrompt = '请贴近麦克风', touchDetectingPrompt = '呼气时请点击屏幕', quitPrompt = '出现错误，请点击退出';
 const dataLen = 280, headLen = 8, lastTime = 72;
+
+var lastTimeStamp, averageRate = 32, averageForce = 32;
 
 Page({
 
@@ -16,7 +18,6 @@ Page({
     id: undefined,
     rate: 32,
     force: 32,
-    prompt: originPrompt,
     quitButtonDisabled: true,
     isRecording: false,
     usingBreathDetecting: false,
@@ -32,7 +33,8 @@ Page({
       success: (res) => {
         const height = wx.getStorageSync(apiConst.WINDOW_HEIGHT_KEY);
         console.log(`设置id = ${res.data}, height = ${height}`);
-        this.setData({ quitButtonDisabled: false, id: res.data, height: height, isRecording: true });
+        var prompt = this.data.usingBreathDetecting ? breathDetectingPrompt : touchDetectingPrompt;
+        this.setData({ prompt: prompt, quitButtonDisabled: false, id: res.data, height: height, isRecording: true });
 
         if (this.data.usingBreathDetecting) {
           this.startDetectBreath();
@@ -57,15 +59,24 @@ Page({
   },
 
   /**
-   * 用户点击 退出 按钮
+   * quit touch start reaction
    */
-  onQuit: function (e) {
-    this.setData({ quitButtonDisabled: true, isRecording: false });
+  onQuitStart: function (e) {
+    this.setData({ isRecording: false });
 
     if (this.data.usingBreathDetecting) {
       const recorderManager = wx.getRecorderManager();
       recorderManager.stop();
     }
+
+    console.log('onQuitStart 方法调用', e);
+  },
+
+  /**
+   * 用户点击 退出 按钮
+   */
+  onQuit: function (e) {
+    this.setData({ quitButtonDisabled: true });
 
     console.log('onQuit 方法调用', e);
 
@@ -174,13 +185,38 @@ Page({
   },
 
   /**
-   * breath tap reaction
+   * breath touch start reaction
    */
-  onBreathTap: function (e) {
-    if (this.data.isRecording) {
+  onBreathTouchStart: function (e) {
+    if (this.data.isRecording && !this.data.usingBreathDetecting) {
       console.log('onBreathTap', e);
-    }
 
+      if (lastTimeStamp) {
+        var interval = e.timeStamp - lastTimeStamp;
+        var rate = Math.floor(60000 / interval);
+        lastTimeStamp = e.timeStamp;
+
+        if (rate > 63) {
+          rate = 63;
+        }
+
+        var newAverageRate = averageRate + ((rate - averageRate) >> 3);
+        var force = Math.floor(newAverageRate / averageRate * rate / this.data.rate * averageForce);
+        if (force > 63) {
+          force = 63;
+        }
+
+        averageRate = newAverageRate;
+        averageForce += ((force - averageForce) >> 3);
+
+        this.setData({ rate: rate, force: force });
+
+        this.sendData();
+      } else {
+        lastTimeStamp = e.timeStamp;
+      }
+
+    }
   },
 
   /**
