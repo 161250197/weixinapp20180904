@@ -109,13 +109,14 @@ Page({
     recorderManager.onFrameRecorded((res) => {
       if (this.data.isRecording) {
         const frameBuffer = res.frameBuffer;
-        var view = new Uint8Array(frameBuffer);
-        var len = frameBuffer.byteLength;
-        var view16 = new Array(len);
-        for (var i = 0; i < len; i++) {
-          view16[i] = view[i].toString(16);
-        }
-        console.log(len, view, view16);
+
+        // base64 -> //v1ZAAD+YSCw8Nv …
+        const base64 = wx.arrayBufferToBase64(frameBuffer)
+
+        // hex -> fffbe2640000f9e2 …
+        const hex = Array.prototype.map.call(new Uint8Array(frameBuffer), x => ('00' + x.toString(16)).slice(-2)).join('');
+
+        console.log(hex);
 
         // TODO
 
