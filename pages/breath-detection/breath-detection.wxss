@@ -51,10 +51,10 @@
   position: absolute;
   top: 40%;
   left: 50%;
-  margin: -30px 0 0 -30px;
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
+  margin: -35px 0 0 -35px;
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
   background-color: #cda66d;
 }
 
@@ -66,22 +66,18 @@
   width: 70px;
   height: 70px;
   border-radius: 35px;
-  background: #9a6613;
+  background: rgb(166, 112, 22);
 }
 
 .circle1 {
-  -webkit-animation: circle 3s linear infinite;
   animation: circle 3s linear infinite;
 }
 
 .circle2 {
-  -webkit-animation: circle 3s linear 0.8s infinite;
   animation: circle 3s linear 0.8s infinite;
 }
 
 .circle3 {
-  -webkit-animation: circle 3s linear 1.6s infinite;
-  /* Safari and Chrome */
   animation: circle 3s linear 1.6s infinite;
 }
 
@@ -89,7 +85,7 @@
   /* Safari and Chrome */
   from {
     opacity: 1;
-    -webkit-transform: scale(0);
+    -webkit-transform: scale(1);
   }
   to {
     opacity: 0;

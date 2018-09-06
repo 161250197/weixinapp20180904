@@ -102,7 +102,7 @@ Page({
       sampleRate: 8000,//采样率
       numberOfChannels: 1,//录音通道数
       encodeBitRate: 16000,//编码码率
-      format: 'aac',//音频格式，有效值 aac/mp3
+      format: 'mp3',//音频格式，有效值 aac/mp3
       frameSize: 1,//指定帧大小，单位 KB
     };
 
