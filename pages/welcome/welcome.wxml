@@ -1,6 +1,6 @@
 <!--pages/welcome/welcome.wxml-->
-<view class="container" style='height: {{height}}rpx'>
-  <image class='background-img' src='../../res/background.jpg'  bindtap='onEnter'></image> 
+<view class="container" style='height: {{height}}rpx' bindtap='onEnter'>
+  <image class='background-img' src='../../res/background.jpg'></image> 
   <view class='prompt-view'>
     <text class='prompt'>{{prompt}}</text>
   </view>
