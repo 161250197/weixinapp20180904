@@ -1,6 +1,6 @@
 // pages/breath-detection/breath-detection.js
 // TODO 修改为解析mp3
-import guideApi from "../../api/api";
+import api from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
 
@@ -85,7 +85,7 @@ Page({
 
     console.log('onQuit 方法调用', e);
 
-    guideApi.quit(
+    api.quit(
       this.data.id,
       (res) => {
         wx.removeStorageSync(apiConst.SAVE_ID_KEY);
@@ -205,10 +205,17 @@ Page({
           rate = 63;
         }
 
+        if (rate < 1) {
+          rate = 1;
+        }
+
         var newAverageRate = averageRate + ((rate - averageRate) >> 3);
         var force = Math.floor(newAverageRate / averageRate * rate / this.data.rate * averageForce);
         if (force > 63) {
           force = 63;
+        }
+        if (force < 1) {
+          force = 1;
         }
 
         averageRate = newAverageRate;
@@ -231,7 +238,7 @@ Page({
     console.log('sendData 方法调用');
     // rate force range in [1, 63]
     if (this.data.id && this.data.rate && this.data.force) {
-      guideApi.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force }, (rej) => {
+      api.sendData({ id: this.data.id, rate: this.data.rate, force: this.data.force }, (rej) => {
         console.log('sendData error');
         this.errorReject(rej);
       });
@@ -254,7 +261,7 @@ Page({
       icon: 'none'
     });
 
-    guideApi.quit(
+    api.quit(
       this.data.id,
       (res) => {
         wx.removeStorageSync(apiConst.SAVE_ID_KEY);

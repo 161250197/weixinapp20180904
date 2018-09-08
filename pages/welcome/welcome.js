@@ -1,5 +1,5 @@
 // pages/welcome/welcome.js
-import guideApi from "../../api/api";
+import api from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url"
 
@@ -35,7 +35,7 @@ Page({
       this.setData({ enterDisabled: true });
       console.log('onEnter 方法调用', e);
 
-      guideApi.enter(
+      api.enter(
         (res) => {
           console.log('enter 成功', res);
           wx.setStorageSync(apiConst.SAVE_ID_KEY, res.id);
