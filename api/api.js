@@ -87,10 +87,11 @@ export default {
    * @param {*} reject 失败回调
    */
   sendData(data, reject) {
-    console.log('data:');
+    var dataPrompt = 'data:'
     for (let key in data) {
-      console.log(`${key}:${data[key]}`);
+      dataPrompt += ` ${key}: ${data[key]};`;
     };
+    console.log(dataPrompt);
 
     if (httpRequest.isTestMode) {
       apiStub.sendData(reject);

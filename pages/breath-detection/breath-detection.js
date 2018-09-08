@@ -4,7 +4,7 @@ import guideApi from "../../api/api";
 import * as apiConst from "../../api/api-const";
 import * as pagesUrl from "../../api/pages-url";
 
-const breathDetectingPrompt = '请贴近麦克风', touchDetectingPrompt = '呼气时请点击屏幕', quitPrompt = '出现错误，请点击退出';
+const breathDetectingPrompt = '请贴近麦克风', touchDetectingPrompt = '每次呼气请点击一下屏幕', quitPrompt = '出现错误，请点击退出';
 const dataLen = 280, headLen = 8, lastTime = 72;
 
 var lastTimeStamp, averageRate = 32, averageForce = 32;
@@ -39,6 +39,11 @@ Page({
         if (this.data.usingBreathDetecting) {
           this.startDetectBreath();
         }
+
+        wx.showToast({
+          title: prompt,
+          icon: 'none'
+        });
       },
       fail: (fai) => {
         console.log('还未加入');

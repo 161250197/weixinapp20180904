@@ -5,11 +5,13 @@ const BASE_URL = "http://111.231.99.122:3000";
 const POST = "POST";
 const GET = "GET";
 var dRequest = (url, data, method, onSuccess, onFail) => {
+  console.log(`time: ${new Date().getTime().toString()}`)
   console.log(`request ${url}`);
-  console.log('params:');
+  var paramsPrompt = 'params:'
   for (let key in data) {
-    console.log(`${key}:${data[key]}`)
+    paramsPrompt += ` ${key}: ${data[key]};`;
   };
+  console.log(paramsPrompt);
 
   var handleFail = (fai) => {
     if (!fai) {
